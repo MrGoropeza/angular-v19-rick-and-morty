@@ -1,0 +1,40 @@
+@let list = characters();
+
+<div class="grid-container">
+  @for (character of list; track $index; let last = $last) {
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ character.name }}</mat-card-title>
+      <mat-card-subtitle>{{ character.species }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="character.image" [alt]="character.name" />
+    <mat-card-content>
+      {{ character.name }}
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>
+
+  @if(last && hasMorePages()) { @defer (on viewport) {
+  <ram-infinite-scroll-spinner
+    class="loader-item"
+    (onInit)="page.set(page() + 1)"
+  />
+  }@placeholder {
+  <ram-infinite-scroll-spinner class="loader-item" />
+  } } }
+</div>
+
+<div
+  [style]="{
+    position: 'fixed',
+    bottom: '1rem',
+    right: '1rem',
+    background: 'red',
+    color: 'white'
+  }"
+>
+  {{ charactersResponse.status() }}
+</div>
